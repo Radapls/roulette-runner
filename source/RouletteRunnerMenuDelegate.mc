@@ -1,47 +1,51 @@
 using Toybox.Attention;
+using Toybox.Math;
 using Toybox.System;
 using Toybox.WatchUi;
 
-public var view;
 public var randomIndex = 3;
 public var timer;
-public var animationDuration = 2000;
 public var isAnimating = false;
 public var animationFinished = false;
-public var elapsedTime = 0;
-public var interval = 100;
+public var interval = 50;
+public var wheelOffset = 0.0;
+public var spinStep = 0.0;
 
 class RouletteRunnerMenuDelegate extends WatchUi.MenuInputDelegate {
-	function initialize() {
+	var mainView;
+
+	function initialize(v) {
 		MenuInputDelegate.initialize();
+		mainView = v;
 	}
 
 	function startRouletteSpin() {
         isAnimating = true;
-        elapsedTime = 0;
-
-       timer.start(method(:spinRoulette), interval, true);
+        animationFinished = false;
+        selectedIndex = null;
+        wheelOffset = (Math.rand() % 360).toFloat();
+        spinStep = 15.0 + (Math.rand() % 15).toFloat();
+        timer.start(method(:spinRoulette), interval, true);
     }
 
     function spinRoulette() {
-        if (elapsedTime >= animationDuration) {
+        wheelOffset += spinStep;
+        spinStep *= 0.96;
+
+        // Update highlighted segment during spin
+        var segAngle = 360.0 / itemSize;
+        var normalized = wheelOffset - (wheelOffset / 360.0).toNumber() * 360.0;
+        if (normalized < 0) { normalized += 360.0; }
+        selectedIndex = ((normalized / segAngle) + 0.5).toNumber() % itemSize;
+
+        WatchUi.requestUpdate();
+
+        if (spinStep < 0.5) {
             timer.stop();
             isAnimating = false;
-            animationFinished = false;
-
-            randomIndex = Math.rand() % itemSize;
-            view.setSelectedIndex(randomIndex);
-
-            WatchUi.requestUpdate();
-            return;
+            animationFinished = true;
+            mainView.setSelectedIndex(selectedIndex);
         }
-
-        randomIndex = Math.rand() % itemSize;
-        view.setSelectedIndex(randomIndex);
-
-        animationFinished = true;
-        WatchUi.requestUpdate();
-        elapsedTime += interval;
     }
 
 	function onMenuItem( item ) {
@@ -51,7 +55,7 @@ class RouletteRunnerMenuDelegate extends WatchUi.MenuInputDelegate {
 		else if (item == :distance) {
         WatchUi.pushView(
             new Rez.Menus.RouletteRunnerDistancesMenu(),
-            new RouletteRunnerMenuDistancesDelegate(view), // pass the view here
+            new RouletteRunnerMenuDistancesDelegate(mainView),
             WatchUi.SLIDE_IMMEDIATE
         );
 		} else if ( item == :exit ) {

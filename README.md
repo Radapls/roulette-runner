@@ -1,63 +1,145 @@
-# Roulette Runner App
+# Running Roulette
 
-The **Roulette Runner** app allows the user to pick a random number of kilometers from a roulette wheel, which can be used to determine distances to run.
+**Running Roulette** is a Garmin watch app that gamifies your running routine by spinning a roulette wheel to randomly select your next running distance. Perfect for runners who want to add spontaneity and fun to their training!
 
 ## Screenshots
 
-Here are some screenshots of the app in action:
-
-![Roulette App Screenshot 1](screenshots/image.png)
+![Roulette App Screenshot](screenshots/image.png)
 
 ## Features
 
-- **Random Number Picker**: The app displays a random number from the roulette wheel each time a button is pressed.
+- **Interactive Roulette Wheel**: Animated spinning wheel with visual feedback and smooth transitions
+- **Multiple Distance Profiles**: Choose from four pre-configured distance ranges:
+  - **5K Profile**: Random distances from 0.5K to 5K (10 segments)
+  - **10K Profile**: Random distances from 1K to 10K (16 segments)
+  - **Half Marathon Profile**: Random distances from 1K to 21K (16 segments)
+  - **Marathon Profile**: Random distances from 1K to 42K (16 segments)
+- **Multi-Language Support**: Available in English, Spanish, and Portuguese
+- **Visual Design**: Casino-style roulette with alternating red/black segments and gold accents
 
-## App Workflow
+## How It Works
 
-The app have two options inside the app menu:
-1. Spin
-   **Press the start button** and then click the spin option to start the roulette.
-2. Exit
-   **Press the start button** and then click the spin option to start the roulette.
-
-After spin the roulette a random **number will be displayed** on the screen.
+1. **Launch the App**: Open Running Roulette on your Garmin watch
+2. **Select Distance Profile** (Optional): Press the menu button and choose "Distances" to select your preferred distance range (5K, 10K, Half Marathon, or Marathon)
+3. **Spin the Wheel**: Press the menu button and select "Spin" to start the roulette animation
+4. **Get Your Distance**: Watch the wheel spin and land on a random distance
+5. **Go Run!**: The selected distance is displayed in the center with a "GO RUN!" prompt
 
 ## Compatibility
 
-The **Roulette** app has just benn tested on the **Garmin Forerunner 965**. Compatibility with other Garmin devices will be added.
+This app is compatible with a wide range of Garmin devices, including:
 
-## Setup & Installation
+- **Forerunner Series**: 165, 165M, 255, 255M, 255S, 255SM, 265, 265S, 570 (42mm/47mm), 955, 965, 970
+- **Fenix Series**: 7, 7S, 7X, 7 Pro, 8 (43mm/47mm), 8 Pro, 8 Solar, Fenix E
+- **Epix Series**: Epix 2, Epix 2 Pro (42mm/47mm/51mm)
 
-To use this app on a Garmin device, follow these steps:
+Tested primarily on **Garmin Forerunner 965**.
 
-1. **Install Garmin Connect**:
-   - Download and install Garmin Connect from [Garmin's official website](https://www.garmin.com/).
+## Development Setup
 
-2. **Install MonkeyC SDK**:
-   - Download the [MonkeyC SDK](https://developer.garmin.com/downloads/) to set up your development environment.
+### Prerequisites
 
-3. **Import the project** into your MonkeyC environment.
+1. **Garmin Connect IQ SDK**:
+   - Download and install the [Connect IQ SDK](https://developer.garmin.com/connect-iq/sdk/) from Garmin's developer portal
+   - Set up your development environment following Garmin's official documentation
 
-4. **Build the app**:
-   - Run the build command using the MonkeyC SDK to compile the project and deploy it to your Garmin device.
+2. **IDE Options**:
+   - **Visual Studio Code** with the Monkey C extension (recommended)
+   - **Eclipse** with the Connect IQ plugin
 
-5. **Launch the App**:
-   - Once installed, launch the **Roulette** app on your Garmin device and start pressing buttons to cycle through the numbers.
+### Building the App
+
+1. **Clone the repository**:
+   ```bash
+   git clone <repository-url>
+   cd roulette
+   ```
+
+2. **Build the project**:
+   - Using VS Code: Open the project and use the Monkey C build commands
+   - Using command line: Use the MonkeyC compiler with the appropriate device target
+
+3. **Deploy to device**:
+   - Connect your Garmin device via USB
+   - Use the Connect IQ SDK tools to deploy the compiled `.prg` file to your device
+
+### Project Structure
+
+```
+roulette/
+├── source/                          # MonkeyC source files
+│   ├── RouletteRunnerApp.mc        # Main application entry point
+│   ├── RouletteRunnerAppView.mc    # View rendering and animation logic
+│   ├── RouletteRunnerMenuDelegate.mc
+│   ├── RouletteRunnerMenuBehavior.mc
+│   └── RouletteRunnerMenuDistancesDelegate.mc
+├── resources/                       # App resources
+│   ├── drawables/                  # Icons and images
+│   ├── jsonData/                   # Distance profile data
+│   ├── layouts/                    # UI layouts
+│   ├── menus/                      # Menu definitions
+│   └── strings/                    # English strings
+├── resources-spa/                   # Spanish translations
+├── resources-por/                   # Portuguese translations
+├── manifest.xml                     # App manifest and device compatibility
+└── monkey.jungle                    # Build configuration
+```
 
 ## Customization
 
-- TBD
+### Adding Custom Distance Profiles
 
-## Dependencies
+Distance profiles are defined in `resources/jsonData/resources.xml`. Each profile is a JSON array of distance strings:
 
-- **MonkeyC SDK**: The app is built using the MonkeyC SDK for Garmin devices.
-- **Garmin Device**: This app requires a Garmin device that supports the MonkeyC framework.
+```xml
+<jsonData id="customProfile">["1K", "2K", "3K", "5K", "8K", "13K"]</jsonData>
+```
+
+To add a new profile:
+1. Add your JSON data to `resources/jsonData/resources.xml`
+2. Update the menu in `resources/menus/roulette_runner_distances_menu.xml`
+3. Add corresponding string resources for the profile name
+4. Update the menu delegate to handle the new profile selection
+
+### Modifying Colors
+
+The roulette wheel colors are defined in `RouletteRunnerAppView.mc`:
+- Red segments: `0xCC0000`
+- Black segments: `0x1A1A1A`
+- Gold accents: `0x888800`
+- Selected segment: `0x444400`
+
+### Adding Languages
+
+To add a new language:
+1. Create a new `resources-{lang}/` directory (e.g., `resources-fra/` for French)
+2. Copy `strings.xml` from `resources/strings/` and translate all strings
+3. Add the language code to `manifest.xml` under `<iq:languages>`
+
+## Technical Details
+
+- **Language**: MonkeyC (Garmin's proprietary language)
+- **Min API Level**: 3.2.0
+- **App Type**: Watch App
+- **Animation**: Custom wheel rotation with physics-based deceleration
+- **Rendering**: Canvas-based drawing with polygon fills for segments
 
 ## Roadmap
-- [ ] Add different values customization (ie. Time, reps, etc)
-- [ ] Add support for other Garmin Devices
-- [ ] Display options based on running distance objetives
+
+- [ ] Add customizable distance values (time-based, rep-based workouts)
+- [ ] Support for additional Garmin device families (Venu, Enduro)
+- [ ] Display workout suggestions based on training objectives
+- [ ] Save spin history and statistics
+- [ ] Integration with Garmin training plans
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Support
+
+For issues, questions, or feature requests, please open an issue on the GitHub repository.
