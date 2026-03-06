@@ -4,7 +4,7 @@
 
 ## Screenshots
 
-![Roulette App Screenshot](screenshots/image.png)
+![Roulette App Screenshot](screenshots/image.jpg)
 
 ## Features
 
