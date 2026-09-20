@@ -20,7 +20,6 @@ class RouletteRunnerMenuDelegate extends WatchUi.MenuInputDelegate {
 	}
 
 	function startRouletteSpin() {
-        mainView.stopSuccessEffect();
         isAnimating = true;
         animationFinished = false;
         selectedIndex = null;
@@ -46,7 +45,11 @@ class RouletteRunnerMenuDelegate extends WatchUi.MenuInputDelegate {
             isAnimating = false;
             animationFinished = true;
             mainView.setSelectedIndex(selectedIndex);
-            mainView.startSuccessEffect();
+            WatchUi.pushView(
+                new RouletteSuccessView(rouletteNumbers[selectedIndex]),
+                new RouletteSuccessDelegate(),
+                WatchUi.SLIDE_IMMEDIATE
+            );
         }
     }
 

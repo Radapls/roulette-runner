@@ -10,4 +10,7 @@
 	<string id="DistanceTenKm" >10 KM</string>
 	<string id="DistanceFiveKm">5 KM</string>
 
+	<string id="GoRunLabel">VAI CORRER!</string>
+	<string id="YouWonLabel">Você ganhou</string>
+
 </strings>

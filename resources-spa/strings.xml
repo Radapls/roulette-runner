@@ -2,12 +2,15 @@
     <string id="AppName">Ruleta del corredor</string>
 
 	<string id="SpinMenuLabel">Girar</string>
-	<string id="DistancesMenuLabel">Distacias</string>
+	<string id="DistancesMenuLabel">Distancias</string>
 	<string id="ExitMenuLabel">Salir</string>
 
 	<string id="DistanceMarathon" >Maratón</string>
 	<string id="DistanceHalfMarathon">Media Maratón</string>
 	<string id="DistanceTenKm" >10 KM</string>
 	<string id="DistanceFiveKm">5 KM</string>
+
+	<string id="GoRunLabel">¡A CORRER!</string>
+	<string id="YouWonLabel">Ganaste</string>
 
 </strings>

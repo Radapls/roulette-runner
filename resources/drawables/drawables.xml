@@ -1,4 +1,4 @@
 <drawables>
     <bitmap id="LauncherIcon" filename="launcher_icon.png" />
-    <bitmap id="SuccessBadge" filename="success_badge.svg" />
+    <bitmap id="RunnerIcon" filename="runner_icon.svg" />
 </drawables>
