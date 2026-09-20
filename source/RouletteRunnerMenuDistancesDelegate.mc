@@ -1,4 +1,5 @@
 using Toybox.Attention;
+using Toybox.Application;
 using Toybox.System;
 using Toybox.WatchUi;
 
@@ -19,7 +20,7 @@ class RouletteRunnerMenuDistancesDelegate extends WatchUi.MenuInputDelegate {
             currentData = Application.loadResource(Rez.JsonData.marathon);
         } else if (item == :halfMarathon) {
             currentData = Application.loadResource(Rez.JsonData.halfMarathon);
-        } else if (item == :TenKm) {
+        } else if (item == :tenKm) {
             currentData = Application.loadResource(Rez.JsonData.tenKm);
         } else if (item == :fiveKm) {
             currentData = Application.loadResource(Rez.JsonData.fiveKm);
